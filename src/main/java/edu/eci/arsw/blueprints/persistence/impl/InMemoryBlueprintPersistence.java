@@ -62,6 +62,17 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         return bprintnames;
     }
 
+    @Override
+    public Set<Blueprint> getAllBlueprints() {
+        Set<Blueprint> bprintnames = new HashSet<>();
+        for(Blueprint b:blueprints.values()){        
+                bprintnames.add(b);
+            
+        }
+        return bprintnames;
+    }
+   
+
     
     
 }
