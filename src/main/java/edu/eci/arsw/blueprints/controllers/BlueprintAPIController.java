@@ -53,7 +53,7 @@ public class BlueprintAPIController {
         }
     }
 
-    @GetMapping("/{authorName}")
+    @GetMapping("blueprints/{authorName}")
     public ResponseEntity<?> GetBlueprintByAuthor(@PathVariable("authorName") String author) {
         try {
             Set<Blueprint> blues = bps.getBlueprintsByAuthor(author);
@@ -65,7 +65,7 @@ public class BlueprintAPIController {
 
     }
 
-    @GetMapping("/{author}/{name}")
+    @GetMapping("blueprints/{author}/{name}")
     public ResponseEntity<?> getBlueprintsByAuthorNameAndBpName(@PathVariable("author") String author, @PathVariable("name") String name) {
         try {
             Set<Blueprint> blue = bps.getBlueprintsByAuthor(author);
@@ -82,7 +82,7 @@ public class BlueprintAPIController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(path = "blueprints",method = RequestMethod.POST)
     public ResponseEntity<?> manejadorPostRecurso(@RequestBody Blueprint blueprint) {
         try {
             bps.saveBlueprint(blueprint);
