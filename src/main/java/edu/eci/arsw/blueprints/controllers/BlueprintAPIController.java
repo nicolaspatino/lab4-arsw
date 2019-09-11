@@ -10,6 +10,7 @@ import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -94,8 +95,8 @@ public class BlueprintAPIController {
         }
 
     }
-    @RequestMapping(path ="{author}/{name}",method = RequestMethod.PUT)
-    public ResponseEntity<?> manejadorPutRecurso(@PathVariable("author") String author,@PathVariable("name") String name,@RequestBody Point p){
+    @RequestMapping(path ="blueprints/{author}/{name}",method = RequestMethod.PUT)
+    public ResponseEntity<?> manejadorPutRecurso(@PathVariable("author") String author,@PathVariable("name") String name,@RequestBody  List<Point> p){
         try {
             Blueprint bpr=null;
             for( Blueprint bp:bps.getBlueprintsByAuthor(author)){
@@ -103,7 +104,7 @@ public class BlueprintAPIController {
                     bpr=bp;
                 }
             }
-            bpr.addPoint(p);
+            bps.update(bpr, p);
             
             return new ResponseEntity<>(HttpStatus.OK);
 
