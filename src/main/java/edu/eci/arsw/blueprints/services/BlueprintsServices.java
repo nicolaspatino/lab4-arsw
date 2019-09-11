@@ -28,10 +28,10 @@ import org.springframework.stereotype.Service;
 public class BlueprintsServices {
 
     @Autowired
-    BlueprintsPersistence bpp = null;
+    BlueprintsPersistence bpp;
     @Autowired
     //@Qualifier("RedundancyFiltering")
-    Filter fil=null;
+    Filter fil;
     //@Qualifier("SubsamplingFiltering")
 
     public void addNewBlueprint(Blueprint bp) {

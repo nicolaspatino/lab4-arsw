@@ -9,7 +9,6 @@ import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
-import edu.eci.arsw.blueprints.services.BlueprintsServices;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -34,13 +33,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class BlueprintAPIController {
 
     @Autowired
-     BlueprintsServices  bps = null;
+     BlueprintsPersistence  bps = null;
 
-    public void setBlueprintPersistence(BlueprintsServices bps) {
+    public void setBlueprintPersistence(BlueprintsPersistence bps) {
         this.bps = bps;
     }
 
-    public BlueprintsServices getBpp() {
+    public BlueprintsPersistence getBpp() {
         return bps;
     }
 
@@ -83,10 +82,10 @@ public class BlueprintAPIController {
         }
     }
 
-    @RequestMapping(value ="/blueprints" ,method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> manejadorPostRecurso(@RequestBody Blueprint blueprint) {
         try {
-            bps.addNewBlueprint(blueprint);
+            bps.saveBlueprint(blueprint);
             //registrar dato
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception ex) {
@@ -95,7 +94,7 @@ public class BlueprintAPIController {
         }
 
     }
-    @RequestMapping(value ="/blueprints/{author}/{name}",method = RequestMethod.PUT)
+    @RequestMapping(path ="{author}/{name}",method = RequestMethod.PUT)
     public ResponseEntity<?> manejadorPutRecurso(@PathVariable("author") String author,@PathVariable("name") String name,@RequestBody Point p){
         try {
             Blueprint bpr=null;
@@ -110,7 +109,7 @@ public class BlueprintAPIController {
 
         } catch (Exception ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("No se ha podido actualizar el blueprint", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("no actualizado", HttpStatus.FORBIDDEN);
         }
     }
 
