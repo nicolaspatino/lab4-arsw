@@ -46,8 +46,9 @@ public class BlueprintAPIController {
     @RequestMapping(value = "/blueprints", method = RequestMethod.GET)
     public ResponseEntity<?> manejadorGetRecursoBlueprintAPIController() {
         try {
+            synchronized(bps){
             return new ResponseEntity<>(bps.getAllBlueprints(), HttpStatus.ACCEPTED);
-        } catch (Exception ex) {
+        } }catch (Exception ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>("Error no blueprints found", HttpStatus.NOT_FOUND);
         }
@@ -56,9 +57,10 @@ public class BlueprintAPIController {
     @GetMapping("blueprints/{authorName}")
     public ResponseEntity<?> GetBlueprintByAuthor(@PathVariable("authorName") String author) {
         try {
+            synchronized(bps){
             Set<Blueprint> blues = bps.getBlueprintsByAuthor(author);
             return new ResponseEntity<>(blues, HttpStatus.ACCEPTED);
-        } catch (Exception e) {
+        } }catch (Exception e) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>("Error no author found", HttpStatus.NOT_FOUND);
         }
@@ -68,6 +70,7 @@ public class BlueprintAPIController {
     @GetMapping("blueprints/{author}/{name}")
     public ResponseEntity<?> getBlueprintsByAuthorNameAndBpName(@PathVariable("author") String author, @PathVariable("name") String name) {
         try {
+            synchronized(bps){
             Set<Blueprint> blue = bps.getBlueprintsByAuthor(author);
             Blueprint res = null;
             for (Blueprint b : blue) {
@@ -76,7 +79,7 @@ public class BlueprintAPIController {
                 }
             }
             return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
-        } catch (Exception e) {
+        } }catch (Exception e) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>("blueprint not found", HttpStatus.NOT_FOUND);
         }
@@ -85,10 +88,11 @@ public class BlueprintAPIController {
     @RequestMapping(path = "blueprints",method = RequestMethod.POST)
     public ResponseEntity<?> manejadorPostRecurso(@RequestBody Blueprint blueprint) {
         try {
+            synchronized(bps){
             bps.saveBlueprint(blueprint);
             //registrar dato
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception ex) {
+                   return new ResponseEntity<>(HttpStatus.CREATED);
+        } }catch (Exception ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>("Error bla bla bla", HttpStatus.FORBIDDEN);
         }
@@ -97,6 +101,7 @@ public class BlueprintAPIController {
     @RequestMapping(path ="{author}/{name}",method = RequestMethod.PUT)
     public ResponseEntity<?> manejadorPutRecurso(@PathVariable("author") String author,@PathVariable("name") String name,@RequestBody Point p){
         try {
+            synchronized(bps){
             Blueprint bpr=null;
             for( Blueprint bp:bps.getBlueprintsByAuthor(author)){
                 if(bp.getName().equals(name)){
@@ -106,7 +111,7 @@ public class BlueprintAPIController {
             bpr.addPoint(p);
             
             return new ResponseEntity<>(HttpStatus.OK);
-
+            }
         } catch (Exception ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>("no actualizado", HttpStatus.FORBIDDEN);
